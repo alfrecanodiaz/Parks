@@ -1,0 +1,20 @@
+<resources>
+    <!--Application-->
+    <string name="app_name">SGN Parks</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!--Menu-->
+    <string name="cerrar_sesion">Cerrar Sesión</string>
+
+    <!--Login-->
+    <string name="usuario">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="entrar">Entrar</string>
+
+    <!--Main Activity-->
+    <string name="travesia_actual">Travesia Actual</string>
+    <string name="historial">Historial</string>
+
+</resources>
