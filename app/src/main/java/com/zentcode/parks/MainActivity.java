@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,6 +23,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.zentcode.parks.app.Messages;
 import com.zentcode.parks.storage.PreferenceManager;
@@ -45,6 +47,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
     private FragmentManager fragmentManager;
+    private Location mLocation;
+    private NavigationView navigationView;
 
     protected OnBackPressedListener onBackPressedListener;
     private boolean mToolBarNavigationListenerIsRegistered = false;
@@ -71,13 +75,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        setHeaderInfo();
 
         if (Build.VERSION.SDK_INT >= 23)
             requestPermissions();
 
         locationProvider.runLocationProvider();
+    }
+
+    public void setHeaderInfo() {
+        View header = navigationView.getHeaderView(0);
+        TextView txtUserName = header.findViewById(R.id.txt_username);
+        TextView txtUnidad = header.findViewById(R.id.txt_unidad);
+        TextView txtDestino = header.findViewById(R.id.txt_destino);
+        txtUserName.setText(preferenceManager.getString(Preferences.USER_NAME));
+        if (hasUnidad()) {
+            txtUnidad.setText(String.format(getResources().getString(R.string.ph_unidad), preferenceManager.getString(Preferences.NOMBRE_UNIDAD)));
+            txtDestino.setText(String.format(getResources().getString(R.string.ph_destino), preferenceManager.getString(Preferences.DESTINO)));
+        } else {
+            txtUnidad.setVisibility(View.GONE);
+            txtDestino.setVisibility(View.GONE);
+        }
+    }
+
+    public Boolean hasUnidad() {
+        return preferenceManager.getString(Preferences.NOMBRE_UNIDAD).equals("");
     }
 
     public void logoutApp() {
@@ -291,6 +316,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(LocationEvent e) {
         System.out.println("event result: " + e.getLocation().getLongitude() + " - " + e.getLocation().getLatitude());
+        this.mLocation = e.getLocation();
+    }
+
+    public Location getCurrentLocation(Location location) {
+        return mLocation;
     }
 
     @Override

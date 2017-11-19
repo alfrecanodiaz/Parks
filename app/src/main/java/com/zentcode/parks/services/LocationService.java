@@ -19,8 +19,6 @@ import com.zentcode.parks.utils.LocationEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.ArrayList;
-
 public class LocationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private LocationRequest mLocationRequest;

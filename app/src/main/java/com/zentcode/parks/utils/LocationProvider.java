@@ -13,8 +13,6 @@ import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.zentcode.parks.services.LocationService;
 
 import java.util.ArrayList;
@@ -23,12 +21,9 @@ public class LocationProvider {
 
     private Context mContext;
     private boolean isRunning = false;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLocation;
 
     public LocationProvider(Context context) {
         mContext = context;
-        this.mLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);;
     }
 
     public void runLocationProvider() {
@@ -62,13 +57,8 @@ public class LocationProvider {
                         Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
     }
 
-    public Location getLocation()
-    {
-        return this.mLocation;
-    }
-
-    public boolean canGetLocation() {
-        return this.mLocation != null && isAccurate(mLocation) && hasLatLon(mLocation);
+    public boolean isValidLocation(Location location) {
+        return location != null && isAccurate(location) && hasLatLon(location);
     }
 
     private boolean isAccurate(Location location) {
