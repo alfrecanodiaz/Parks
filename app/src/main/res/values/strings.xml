@@ -18,8 +18,14 @@
     <!--Home-->
     <string name="travesia_actual">Travesia Actual</string>
     <string name="sgn_desc">Sistema de Gestión Naval</string>
+    <!--Travesias-->
+    <string name="travesia_destino">Destino:</string>
+    <string name="travesia_responsable1">Responsable 1:</string>
+    <string name="travesia_responsable2">Responsable 2:</string>
+    <string name="travesia_fecha_inicio">Fecha de partida:</string>
     <!--Placeholder-->
     <string name="ph_unidad">Unidad: %1$s</string>
     <string name="ph_destino">Destino: %1$s</string>
     <string name="ph_unidad_fragment">Módulo: %1$s - Seleccionar Unidad:</string>
+    <string name="ph_travesia_fragment">Unidad: %1$s - Seleccionar Travesia:</string>
 </resources>

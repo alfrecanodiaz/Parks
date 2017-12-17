@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +16,7 @@ import com.android.volley.Request;
 import com.zentcode.parks.MainActivity;
 import com.zentcode.parks.R;
 import com.zentcode.parks.app.Messages;
-import com.zentcode.parks.models.Unidad;
+import com.zentcode.parks.models.Travesia;
 import com.zentcode.parks.network.ObjectRequest;
 import com.zentcode.parks.network.Routes;
 import com.zentcode.parks.utils.Helper;
@@ -29,30 +28,32 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UnidadesFragment extends Fragment {
+public class TravesiasFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private Integer moduloId;
+    private Integer unidadId;
+    private String unidadNombre;
     private String moduloNombre;
 
-    public UnidadesFragment() {}
+    public TravesiasFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        moduloId = getArguments().getInt("modulo_id");
+        unidadId = getArguments().getInt("unidad_id");
+        unidadNombre = getArguments().getString("unidad_nombre");
         moduloNombre = getArguments().getString("modulo_nombre");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_unidades, container, false);
+        View view = inflater.inflate(R.layout.fragment_travesias, container, false);
 
-        TextView txtUnidad = view.findViewById(R.id.txt_unidad);
-        txtUnidad.setText(String.format(getResources().getString(R.string.ph_unidad_fragment), moduloNombre));
+        TextView txtTravesia = view.findViewById(R.id.txt_travesia);
+        txtTravesia.setText(String.format(getResources().getString(R.string.ph_travesia_fragment), unidadNombre));
 
-        recyclerView = view.findViewById(R.id.recyclerview_unidades);
+        recyclerView = view.findViewById(R.id.recyclerview_travesias);
         recyclerView.setLayoutManager(Helper.getLayoutManager());
 
         setHeader();
@@ -66,7 +67,7 @@ public class UnidadesFragment extends Fragment {
     private void getData() {
         final AlertDialog loading = Helper.showLoading(getContext());
         ObjectRequest request = new ObjectRequest(getContext());
-        request.sendRequest(Request.Method.GET, Routes.getUnidadesUrl(moduloId), null, new ObjectRequest.RequestCallback() {
+        request.sendRequest(Request.Method.GET, Routes.getTravesiasUrl(unidadId), null, new ObjectRequest.RequestCallback() {
             @Override
             public void success(JSONObject response) {
                 Helper.hideLoading(loading);
@@ -74,7 +75,7 @@ public class UnidadesFragment extends Fragment {
                     if (response.has("status")) {
                         Toast.makeText(getContext(), response.getString("status"), Toast.LENGTH_SHORT).show();
                     } else {
-                        list(response.getJSONArray("unidades"));
+                        list(response.getJSONArray("travesias"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -89,28 +90,33 @@ public class UnidadesFragment extends Fragment {
     }
 
     private void list(JSONArray jsonArray) {
-        List<Unidad> unidades = new ArrayList<>();
+        System.out.println("JSON: " + jsonArray.toString());
+        List<Travesia> travesias = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             try {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                Unidad unidad = new Unidad();
-                unidad.setId(jsonObject.getInt("id"));
-                unidad.setNombre(jsonObject.getString("nombre"));
-                unidades.add(unidad);
+                Travesia travesia = new Travesia();
+                travesia.setIdServidor(jsonObject.getInt("id"));
+                travesia.setDestino(jsonObject.getString("destino"));
+                travesia.setResponsable1(jsonObject.getString("responsable1"));
+                travesia.setResponsable2(jsonObject.getString("responsable2"));
+                travesia.setFechaInicio(jsonObject.getString("fecha_inicio"));
+                travesias.add(travesia);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        UnidadesAdapter adapter = new UnidadesAdapter(getContext(), unidades);
+        System.out.println("9999: " + String.valueOf(travesias.size()));
+        TravesiasAdapter adapter = new TravesiasAdapter(getContext(), travesias);
         recyclerView.setAdapter(adapter);
     }
 
-    private class UnidadesAdapter extends RecyclerView.Adapter<UnidadesAdapter.CustomViewHolder> {
+    private class TravesiasAdapter extends RecyclerView.Adapter<TravesiasAdapter .CustomViewHolder> {
 
-        private List<Unidad> items;
+        private List<Travesia> items;
         private Context mContext;
 
-        UnidadesAdapter(Context context, List<Unidad> list) {
+        TravesiasAdapter (Context context, List<Travesia> list) {
             this.items = list;
             this.mContext = context;
         }
@@ -122,14 +128,17 @@ public class UnidadesFragment extends Fragment {
 
         @Override
         public CustomViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.simple_list, viewGroup, false);
+            View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.rv_travesias, viewGroup, false);
             return new CustomViewHolder(view);
         }
 
         @Override
         public void onBindViewHolder(final CustomViewHolder holder, int position) {
-            Unidad unidad = items.get(position);
-            holder.btnUnidad.setText(unidad.getNombre());
+            Travesia travesia = items.get(position);
+            holder.txtDestino.setText(travesia.getDestino());
+            holder.txtFechaInicio.setText(travesia.getFechaInicio());
+            holder.txtResponsable1.setText(travesia.getResponsable1());
+            holder.txtResponsable2.setText(travesia.getResponsable2());
         }
 
         @Override
@@ -139,24 +148,31 @@ public class UnidadesFragment extends Fragment {
 
         class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-            Button btnUnidad;
+            TextView txtDestino;
+            TextView txtFechaInicio;
+            TextView txtResponsable1;
+            TextView txtResponsable2;
 
             CustomViewHolder(View view) {
                 super(view);
-                this.btnUnidad = view.findViewById(R.id.simple_item);
-                btnUnidad.setOnClickListener(this);
+                this.txtDestino = view.findViewById(R.id.txt_travesia_destino);
+                this.txtFechaInicio = view.findViewById(R.id.txt_travesia_fecha_inicio);
+                this.txtResponsable1 = view.findViewById(R.id.txt_travesia_responsable1);
+                this.txtResponsable2 = view.findViewById(R.id.txt_travesia_responsable2);
+                view.setOnClickListener(this);
             }
 
             @Override
             public void onClick(View v) {
-                final Unidad unidad = items.get(getAdapterPosition());
-                Fragment fragment = new TravesiasFragment();
-                Bundle params = new Bundle();
-                params.putInt("unidad_id", unidad.getId());
-                params.putString("unidad_nombre", unidad.getNombre());
-                params.putString("modulo_nombre", moduloNombre);
-                fragment.setArguments(params);
-                getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+                final Travesia travesia = items.get(getAdapterPosition());
+                Toast.makeText(mContext, travesia.getDestino(), Toast.LENGTH_SHORT).show();
+//                Fragment fragment = new TravesiasFragment();
+//                Bundle params = new Bundle();
+//                params.putInt("unidad_id", unidad.getId());
+//                params.putString("unidad_nombre", unidad.getNombre());
+//                params.putString("modulo_nombre", moduloNombre);
+//                fragment.setArguments(params);
+//                getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
             }
         }
     }
@@ -167,7 +183,7 @@ public class UnidadesFragment extends Fragment {
     }
 
     private void setHeader() {
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Unidades");
+        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Travesias");
     }
 
     @Override

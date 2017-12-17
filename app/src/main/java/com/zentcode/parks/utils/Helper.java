@@ -71,4 +71,11 @@ public class Helper {
     public static RecyclerView.LayoutManager getLayoutManager() {
         return new LinearLayoutManager(App.getContext());
     }
+
+    public static Boolean intToBool(int value) {
+        if (value < 0 || value > 1)
+         return null;
+
+        return value == 1;
+    }
 }
