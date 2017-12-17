@@ -1,0 +1,82 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:fillViewport="true"
+    tools:context="com.zentcode.parks.fragments.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:weightSum="2">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1.2">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/sgn"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/sgn_desc" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:background="@color/colorPrimaryDark">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <View
+                    android:id="@+id/centerShim"
+                    android:layout_height="match_parent"
+                    android:layout_width="0dp"
+                    android:visibility="invisible"
+                    android:layout_centerHorizontal="true"/>
+
+                <TextView
+                    android:id="@+id/txt_travesia"
+                    android:text="@string/travesia_actual"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="10dp"
+                    android:paddingTop="80dp"
+                    android:drawableTop="@drawable/ic_menu_gallery"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorText"
+                    android:textSize="22sp"
+                    android:layout_alignParentStart="true"
+                    android:layout_toStartOf="@+id/centerShim"/>
+
+                <TextView
+                    android:id="@+id/txt_historial"
+                    android:text="@string/historial"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawablePadding="10dp"
+                    android:paddingTop="80dp"
+                    android:drawableTop="@drawable/ic_menu_share"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/colorText"
+                    android:textSize="22sp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_toEndOf="@+id/centerShim"/>
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

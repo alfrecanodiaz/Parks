@@ -70,9 +70,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String email = edtUser.getText().toString().trim();
         String password = edtPassword.getText().toString().trim();
         if (!emailValidator(email)) {
-            Toast.makeText(this, Messages.ERR_INVALID_MAIL, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Messages.INVALID_EMAIL, Toast.LENGTH_SHORT).show();
         } else if (!passwordValidator(password)) {
-            Toast.makeText(this, Messages.ERR_INVALID_PASS, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, Messages.INVALID_PASSWORD, Toast.LENGTH_SHORT).show();
         } else {
             body = new HashMap<>();
             body.put("email", email);
@@ -82,12 +82,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void login() {
-        final AlertDialog loading = Helper.showProgressDialog(this);
+        final AlertDialog loading = Helper.showLoading(this);
         ObjectRequest request = new ObjectRequest(this);
         request.sendRequest(Request.Method.POST, Routes.getLoginUrl(), Helper.prepareJson(body), new ObjectRequest.RequestCallback() {
             @Override
             public void success(JSONObject response) {
-                Helper.hideProgressDialog(loading);
+                Helper.hideLoading(loading);
                 try {
                     if (response.has("status")) {
                         Toast.makeText(LoginActivity.this, response.getString("status"), Toast.LENGTH_SHORT).show();
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
             @Override
             public void error() {
-                Helper.hideProgressDialog(loading);
+                Helper.hideLoading(loading);
                 Toast.makeText(LoginActivity.this, Messages.NETWORK_ERROR, Toast.LENGTH_SHORT).show();
             }
         });

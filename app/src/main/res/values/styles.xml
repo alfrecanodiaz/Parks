@@ -57,6 +57,11 @@
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">bold</item>
     </style>
+    <style name="subheading_primary" parent="spacing_2">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
     <style name="body" parent="spacing_2">
         <item name="android:textColor">@color/colorSecondaryText</item>
         <item name="android:textSize">14sp</item>

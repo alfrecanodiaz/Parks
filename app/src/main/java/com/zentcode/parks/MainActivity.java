@@ -10,8 +10,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -26,6 +27,8 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.zentcode.parks.app.Messages;
+import com.zentcode.parks.fragments.HomeFragment;
+import com.zentcode.parks.fragments.ModulosFragment;
 import com.zentcode.parks.storage.PreferenceManager;
 import com.zentcode.parks.storage.Preferences;
 import com.zentcode.parks.utils.LocationProvider;
@@ -46,7 +49,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
     private ActionBarDrawerToggle toggle;
     private Toolbar toolbar;
-    private FragmentManager fragmentManager;
     private Location mLocation;
     private NavigationView navigationView;
 
@@ -61,13 +63,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         preferenceManager = new PreferenceManager(this);
         LocationProvider locationProvider = new LocationProvider(this);
-        fragmentManager = getSupportFragmentManager();
 
         setContentView(R.layout.activity_main);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.app_name);
+//        getSupportActionBar().setTitle(R.string.inicio);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         toggle = new ActionBarDrawerToggle(
@@ -84,6 +85,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             requestPermissions();
 
         locationProvider.runLocationProvider();
+
+        startFragment();
+    }
+
+    private void startFragment() {
+        Fragment home = new HomeFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, home).addToBackStack(null).commit();
     }
 
     public void setHeaderInfo() {
@@ -133,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         if (addPermission(permissionsList, Manifest.permission.CAMERA)) {
-            permissionsNeeded.add("Cámara.");
+            permissionsNeeded.add("Cámara");
         }
 
         if (permissionsList.size() > 0 && permissionsNeeded.size() > 0) {
@@ -160,7 +168,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             permissionsList.add(permission);
             return true;
         }
-
         return false;
     }
 
@@ -304,11 +311,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        Fragment fragment = null;
         switch (item.getItemId()) {
-
+            case R.id.nav_home:
+                break;
+            case R.id.nav_sincronizar:
+                fragment = new ModulosFragment();
+                break;
+            case R.id.nav_historial:
+                break;
+            case R.id.nav_travesia:
+                break;
+            case R.id.nav_status:
+                break;
+            case R.id.nav_logout:
+                logoutApp();
+                break;
         }
-
-        drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -333,5 +353,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     protected void onStop() {
         EventBus.getDefault().unregister(this);
         super.onStop();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 }

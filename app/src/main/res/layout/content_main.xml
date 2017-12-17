@@ -10,69 +10,10 @@
     tools:context="com.zentcode.parks.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/fragment_container"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.6"
-        android:background="@drawable/sgn" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.4">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:baselineAligned="false">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/colorPrimaryDark">
-
-                <TextView
-                    android:id="@+id/txt_travesia"
-                    android:text="@string/travesia_actual"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@drawable/ic_menu_gallery"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="50dp"
-                    android:textColor="@color/colorText"
-                    android:textSize="22sp" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.5"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/colorPrimaryLight">
-
-                <TextView
-                    android:id="@+id/txt_historial"
-                    android:text="@string/historial"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:drawablePadding="10dp"
-                    android:drawableTop="@drawable/ic_menu_share"
-                    android:gravity="center_horizontal"
-                    android:paddingTop="50dp"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="22sp" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
+        android:layout_height="match_parent">
+    </FrameLayout>
 
 </LinearLayout>

@@ -89,8 +89,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     private void initLocationRequest() {
         /*interval 5000, fastestinterval 2000*/
         mLocationRequest = new LocationRequest()
-                .setInterval(5000)
-                .setFastestInterval(5000)
+                .setInterval(10000)
+                .setFastestInterval(10000)
                 .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 

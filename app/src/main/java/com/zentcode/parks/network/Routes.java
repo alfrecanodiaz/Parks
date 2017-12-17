@@ -15,15 +15,15 @@ public class Routes {
         return getBaseUrl() + "login";
     }
 
-    public static String getModuloUrl() {
+    public static String getModulosUrl() {
         return getBaseUrl() + "modulos" + apiTokenParam();
     }
 
-    public static String getUnidadUrl(Integer moduloId) {
+    public static String getUnidadesUrl(Integer moduloId) {
         return getBaseUrl() + "unidades/" + moduloId + apiTokenParam();
     }
 
-    public static String getTravesiaUrl(Integer unidadId) {
+    public static String getTravesiasUrl(Integer unidadId) {
         return getBaseUrl() + "travesias/" + unidadId + apiTokenParam();
     }
 
